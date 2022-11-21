@@ -1,0 +1,226 @@
+ID,Condition_number,Target_Screen,Flanker_Screen,Fixation_Screen,Target_Flanker_Spacing_in_deg,CircSD_deg
+Exp5_S10,1,mid,mid,mid,5,34.4123351000736
+Exp5_S10,2,mid,mid,mid,2.5,30.0304745277736
+Exp5_S10,3,mid,mid,mid,1.25,87.6382864857896
+Exp5_S10,4,mid,mid,mid,0.625,84.1935103538449
+Exp5_S10,5,near,near,near,5,25.4126383658199
+Exp5_S10,6,near,near,near,2.5,15.4886847137104
+Exp5_S10,7,near,near,near,1.25,83.4205132517346
+Exp5_S10,8,near,near,near,0.625,106.892109314867
+Exp5_S10,9,far,far,far,5,29.8029958183352
+Exp5_S10,10,far,far,far,2.5,30.5363275166761
+Exp5_S10,11,far,far,far,1.25,47.4684517061813
+Exp5_S10,12,far,far,far,0.625,66.3295786570012
+Exp5_S10,13,mid,no flankers,mid,Inf,34.5412406505796
+Exp5_S10,14,near,no flankers,near,Inf,36.0501051253285
+Exp5_S10,15,far,no flankers,far,Inf,26.5788799589565
+Exp5_S11,1,mid,mid,mid,5,22.4261982138656
+Exp5_S11,2,mid,mid,mid,2.5,33.2043237684111
+Exp5_S11,3,mid,mid,mid,1.25,28.760633001116
+Exp5_S11,4,mid,mid,mid,0.625,116.561478227611
+Exp5_S11,5,near,near,near,5,53.2613233009541
+Exp5_S11,6,near,near,near,2.5,34.7014086634996
+Exp5_S11,7,near,near,near,1.25,84.6388948888338
+Exp5_S11,8,near,near,near,0.625,68.0545584354706
+Exp5_S11,9,far,far,far,5,36.8612189455641
+Exp5_S11,10,far,far,far,2.5,67.409168862856
+Exp5_S11,11,far,far,far,1.25,29.3279422071128
+Exp5_S11,12,far,far,far,0.625,49.5387051875731
+Exp5_S11,13,mid,no flankers,mid,Inf,45.4690028850433
+Exp5_S11,14,near,no flankers,near,Inf,52.8138478749124
+Exp5_S11,15,far,no flankers,far,Inf,43.9784012983873
+Exp5_S12,1,mid,mid,mid,5,12.7634126686815
+Exp5_S12,2,mid,mid,mid,2.5,41.6591494330355
+Exp5_S12,3,mid,mid,mid,1.25,42.8658277491561
+Exp5_S12,4,mid,mid,mid,0.625,70.9837960738295
+Exp5_S12,5,near,near,near,5,20.4102847182847
+Exp5_S12,6,near,near,near,2.5,12.1099745700729
+Exp5_S12,7,near,near,near,1.25,40.454074867105
+Exp5_S12,8,near,near,near,0.625,76.4482449086722
+Exp5_S12,9,far,far,far,5,27.1236762723156
+Exp5_S12,10,far,far,far,2.5,47.2313258711082
+Exp5_S12,11,far,far,far,1.25,96.3184618604944
+Exp5_S12,12,far,far,far,0.625,102.140897587715
+Exp5_S12,13,mid,no flankers,mid,Inf,15.9489207464488
+Exp5_S12,14,near,no flankers,near,Inf,15.2334091531306
+Exp5_S12,15,far,no flankers,far,Inf,24.2799269323028
+Exp5_S13,1,mid,mid,mid,5,19.2260310708262
+Exp5_S13,2,mid,mid,mid,2.5,9.53183353976908
+Exp5_S13,3,mid,mid,mid,1.25,12.5034906817311
+Exp5_S13,4,mid,mid,mid,0.625,12.63868466659
+Exp5_S13,5,near,near,near,5,12.4970028673017
+Exp5_S13,6,near,near,near,2.5,11.7507895371162
+Exp5_S13,7,near,near,near,1.25,13.5512243981171
+Exp5_S13,8,near,near,near,0.625,37.6938472051783
+Exp5_S13,9,far,far,far,5,7.65210908015147
+Exp5_S13,10,far,far,far,2.5,19.8856557795632
+Exp5_S13,11,far,far,far,1.25,14.8281203588439
+Exp5_S13,12,far,far,far,0.625,42.7336068921164
+Exp5_S13,13,mid,no flankers,mid,Inf,13.6138482483061
+Exp5_S13,14,near,no flankers,near,Inf,14.853818755953
+Exp5_S13,15,far,no flankers,far,Inf,10.7428188448118
+Exp5_S14,1,mid,mid,mid,5,38.8930497309617
+Exp5_S14,2,mid,mid,mid,2.5,41.8061350361122
+Exp5_S14,3,mid,mid,mid,1.25,62.238305811457
+Exp5_S14,4,mid,mid,mid,0.625,55.8529067424034
+Exp5_S14,5,near,near,near,5,36.0358096334945
+Exp5_S14,6,near,near,near,2.5,32.0401389911785
+Exp5_S14,7,near,near,near,1.25,37.3995281424734
+Exp5_S14,8,near,near,near,0.625,18.1847488192914
+Exp5_S14,9,far,far,far,5,25.3618155752126
+Exp5_S14,10,far,far,far,2.5,38.5188953144289
+Exp5_S14,11,far,far,far,1.25,65.8458393576699
+Exp5_S14,12,far,far,far,0.625,66.3359982793868
+Exp5_S14,13,mid,no flankers,mid,Inf,17.4011263659282
+Exp5_S14,14,near,no flankers,near,Inf,14.8899378690896
+Exp5_S14,15,far,no flankers,far,Inf,16.9284895868422
+Exp5_S15,1,mid,mid,mid,5,71.9458869989717
+Exp5_S15,2,mid,mid,mid,2.5,47.052013739237
+Exp5_S15,3,mid,mid,mid,1.25,62.9003547972005
+Exp5_S15,4,mid,mid,mid,0.625,46.1098844840136
+Exp5_S15,5,near,near,near,5,36.2123963445168
+Exp5_S15,6,near,near,near,2.5,38.9287336805085
+Exp5_S15,7,near,near,near,1.25,81.9697183910515
+Exp5_S15,8,near,near,near,0.625,61.1878315867383
+Exp5_S15,9,far,far,far,5,35.5385355126026
+Exp5_S15,10,far,far,far,2.5,48.4452398701711
+Exp5_S15,11,far,far,far,1.25,64.9701310707672
+Exp5_S15,12,far,far,far,0.625,63.8109537670712
+Exp5_S15,13,mid,no flankers,mid,Inf,24.6493341988192
+Exp5_S15,14,near,no flankers,near,Inf,23.8344158774838
+Exp5_S15,15,far,no flankers,far,Inf,53.1324519781173
+Exp5_S1,1,mid,mid,mid,5,14.242956964222
+Exp5_S1,2,mid,mid,mid,2.5,11.1376577376484
+Exp5_S1,3,mid,mid,mid,1.25,12.1967294856182
+Exp5_S1,4,mid,mid,mid,0.625,45.3972157235833
+Exp5_S1,5,near,near,near,5,15.0945525635348
+Exp5_S1,6,near,near,near,2.5,11.5499823991621
+Exp5_S1,7,near,near,near,1.25,17.5107016180998
+Exp5_S1,8,near,near,near,0.625,36.7156030558475
+Exp5_S1,9,far,far,far,5,11.2497017873211
+Exp5_S1,10,far,far,far,2.5,11.2278731894893
+Exp5_S1,11,far,far,far,1.25,32.0587172658115
+Exp5_S1,12,far,far,far,0.625,72.4887276782119
+Exp5_S1,13,mid,no flankers,mid,Inf,16.6078853103952
+Exp5_S1,14,near,no flankers,near,Inf,14.5620122286028
+Exp5_S1,15,far,no flankers,far,Inf,20.0734073452928
+Exp5_S2,1,mid,mid,mid,5,11.6133928589812
+Exp5_S2,2,mid,mid,mid,2.5,14.6839383358905
+Exp5_S2,3,mid,mid,mid,1.25,12.9729473949188
+Exp5_S2,4,mid,mid,mid,0.625,15.5265452939549
+Exp5_S2,5,near,near,near,5,11.9268841606646
+Exp5_S2,6,near,near,near,2.5,22.2248264904193
+Exp5_S2,7,near,near,near,1.25,42.6576485567997
+Exp5_S2,8,near,near,near,0.625,26.8719824779828
+Exp5_S2,9,far,far,far,5,15.6974685827929
+Exp5_S2,10,far,far,far,2.5,18.3328878872214
+Exp5_S2,11,far,far,far,1.25,61.4155061445709
+Exp5_S2,12,far,far,far,0.625,39.4761158748554
+Exp5_S2,13,mid,no flankers,mid,Inf,17.5679225112118
+Exp5_S2,14,near,no flankers,near,Inf,15.2467548086329
+Exp5_S2,15,far,no flankers,far,Inf,8.10164844700073
+Exp5_S3,1,mid,mid,mid,5,8.52720359632665
+Exp5_S3,2,mid,mid,mid,2.5,14.2162253302229
+Exp5_S3,3,mid,mid,mid,1.25,19.8222428646345
+Exp5_S3,4,mid,mid,mid,0.625,18.3243394747489
+Exp5_S3,5,near,near,near,5,18.6974248062505
+Exp5_S3,6,near,near,near,2.5,14.3079286698074
+Exp5_S3,7,near,near,near,1.25,32.5475708958955
+Exp5_S3,8,near,near,near,0.625,10.7618252558297
+Exp5_S3,9,far,far,far,5,18.2781912879301
+Exp5_S3,10,far,far,far,2.5,12.6525993259062
+Exp5_S3,11,far,far,far,1.25,20.3686646839608
+Exp5_S3,12,far,far,far,0.625,41.2331869066401
+Exp5_S3,13,mid,no flankers,mid,Inf,19.5959646913529
+Exp5_S3,14,near,no flankers,near,Inf,18.0724206231626
+Exp5_S3,15,far,no flankers,far,Inf,23.0430735595204
+Exp5_S4,1,mid,mid,mid,5,18.4187434125842
+Exp5_S4,2,mid,mid,mid,2.5,28.1627414253764
+Exp5_S4,3,mid,mid,mid,1.25,45.1451592898591
+Exp5_S4,4,mid,mid,mid,0.625,30.5196288800711
+Exp5_S4,5,near,near,near,5,27.7661315799754
+Exp5_S4,6,near,near,near,2.5,18.0251883710784
+Exp5_S4,7,near,near,near,1.25,33.809112776227
+Exp5_S4,8,near,near,near,0.625,56.2957886993043
+Exp5_S4,9,far,far,far,5,39.1398709656979
+Exp5_S4,10,far,far,far,2.5,24.9614611411198
+Exp5_S4,11,far,far,far,1.25,69.5716460737786
+Exp5_S4,12,far,far,far,0.625,51.4579339625301
+Exp5_S4,13,mid,no flankers,mid,Inf,18.4549213383469
+Exp5_S4,14,near,no flankers,near,Inf,19.6888871836917
+Exp5_S4,15,far,no flankers,far,Inf,40.4401056430337
+Exp5_S5,1,mid,mid,mid,5,15.2972699785443
+Exp5_S5,2,mid,mid,mid,2.5,20.7236603788236
+Exp5_S5,3,mid,mid,mid,1.25,44.0151111235534
+Exp5_S5,4,mid,mid,mid,0.625,34.4861286575121
+Exp5_S5,5,near,near,near,5,14.2203810388059
+Exp5_S5,6,near,near,near,2.5,8.03088628897105
+Exp5_S5,7,near,near,near,1.25,14.9219991704298
+Exp5_S5,8,near,near,near,0.625,36.9059386406307
+Exp5_S5,9,far,far,far,5,17.2303551603819
+Exp5_S5,10,far,far,far,2.5,12.0263743664543
+Exp5_S5,11,far,far,far,1.25,27.8970491526546
+Exp5_S5,12,far,far,far,0.625,38.4625289504549
+Exp5_S5,13,mid,no flankers,mid,Inf,19.4890477286748
+Exp5_S5,14,near,no flankers,near,Inf,20.234074579001
+Exp5_S5,15,far,no flankers,far,Inf,35.8231055492383
+Exp5_S6,1,mid,mid,mid,5,10.0980426251505
+Exp5_S6,2,mid,mid,mid,2.5,13.1810268358131
+Exp5_S6,3,mid,mid,mid,1.25,34.4638309150875
+Exp5_S6,4,mid,mid,mid,0.625,89.4663864989047
+Exp5_S6,5,near,near,near,5,6.69548144691262
+Exp5_S6,6,near,near,near,2.5,19.8395146340506
+Exp5_S6,7,near,near,near,1.25,10.5587022399451
+Exp5_S6,8,near,near,near,0.625,43.5475225622511
+Exp5_S6,9,far,far,far,5,14.1173379907692
+Exp5_S6,10,far,far,far,2.5,13.1063007556207
+Exp5_S6,11,far,far,far,1.25,48.5662583940457
+Exp5_S6,12,far,far,far,0.625,65.9654799514493
+Exp5_S6,13,mid,no flankers,mid,Inf,13.4837115411995
+Exp5_S6,14,near,no flankers,near,Inf,8.4504340072156
+Exp5_S6,15,far,no flankers,far,Inf,10.5053715534825
+Exp5_S7,1,mid,mid,mid,5,25.9197894213447
+Exp5_S7,2,mid,mid,mid,2.5,17.2385588101954
+Exp5_S7,3,mid,mid,mid,1.25,33.0607072329558
+Exp5_S7,4,mid,mid,mid,0.625,52.4493816494324
+Exp5_S7,5,near,near,near,5,17.5830926910129
+Exp5_S7,6,near,near,near,2.5,17.1796311469468
+Exp5_S7,7,near,near,near,1.25,42.6862080258148
+Exp5_S7,8,near,near,near,0.625,16.3201993097672
+Exp5_S7,9,far,far,far,5,17.4651845043207
+Exp5_S7,10,far,far,far,2.5,22.8052543179536
+Exp5_S7,11,far,far,far,1.25,55.0676256588073
+Exp5_S7,12,far,far,far,0.625,55.68795677855
+Exp5_S7,13,mid,no flankers,mid,Inf,41.255518489576
+Exp5_S7,14,near,no flankers,near,Inf,13.6345483578167
+Exp5_S7,15,far,no flankers,far,Inf,24.0523258861834
+Exp5_S8,1,mid,mid,mid,5,60.5021912297041
+Exp5_S8,2,mid,mid,mid,2.5,44.6545722928522
+Exp5_S8,3,mid,mid,mid,1.25,66.2362919942398
+Exp5_S8,4,mid,mid,mid,0.625,60.8430304465471
+Exp5_S8,5,near,near,near,5,13.9527636913418
+Exp5_S8,6,near,near,near,2.5,34.3329301891137
+Exp5_S8,7,near,near,near,1.25,69.7297046651522
+Exp5_S8,8,near,near,near,0.625,96.8704582755619
+Exp5_S8,9,far,far,far,5,42.1357017150222
+Exp5_S8,10,far,far,far,2.5,66.2470549689581
+Exp5_S8,11,far,far,far,1.25,48.313817208496
+Exp5_S8,12,far,far,far,0.625,58.1741597231228
+Exp5_S8,13,mid,no flankers,mid,Inf,16.142921190239
+Exp5_S8,14,near,no flankers,near,Inf,14.0846783376099
+Exp5_S8,15,far,no flankers,far,Inf,13.6789990702162
+Exp5_S9,1,mid,mid,mid,5,16.5208545694529
+Exp5_S9,2,mid,mid,mid,2.5,12.0315669906905
+Exp5_S9,3,mid,mid,mid,1.25,29.3438956180446
+Exp5_S9,4,mid,mid,mid,0.625,31.0743694993353
+Exp5_S9,5,near,near,near,5,20.8651791706142
+Exp5_S9,6,near,near,near,2.5,9.59199077796804
+Exp5_S9,7,near,near,near,1.25,9.45453532922439
+Exp5_S9,8,near,near,near,0.625,40.9868596012063
+Exp5_S9,9,far,far,far,5,14.5719418334424
+Exp5_S9,10,far,far,far,2.5,15.1321474655524
+Exp5_S9,11,far,far,far,1.25,12.0476899320965
+Exp5_S9,12,far,far,far,0.625,92.7773085377019
+Exp5_S9,13,mid,no flankers,mid,Inf,13.3400264283458
+Exp5_S9,14,near,no flankers,near,Inf,37.4758743855212
+Exp5_S9,15,far,no flankers,far,Inf,21.6768629921165

@@ -1,10 +1,9 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
 # the data for the perceived position of the target relative to the flanker ring that was reported by the 
 # subject's in experiments 1-4 in Smithers et al.- "Large differences in target-flanker depth increase 
-# crowding- evidence from a multi-depth plane display". This script accompanies the pre-print version of 
-# the paper and is currently undergoing peer review.
-# For an explanation of the statistical analysis conducted, we refer readers to the statistical analysis 
-# section of the methods in the main manuscript.
+# crowding- evidence from a multi-depth plane display". This script accompanies the pre-print version of the
+# paper and is currently undergoing peer review. For an explanation of the statistical analysis conducted, 
+# please refer to the statistical analysis section of the methods in the main manuscript.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2022
 # Last edited March 2023

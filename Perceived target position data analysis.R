@@ -1,12 +1,13 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
 # the data for the perceived position of the target relative to the flanker ring that was reported by the 
-# subject's in experiments 1-4 in Smithers et al.- "Effect of depth on crowding investigated with a multi-depth 
-# plane display". This script accompanies the pre-print version of the paper and has not yet been peer reviewed.
-# For an explanation of the statistical analysis conducted, we refer readers to the statistical analysis section 
-# of the methods in the main manuscript.
+# subject's in experiments 1-4 in Smithers et al.- "Large differences in target-flanker depth increase 
+# crowding- evidence from a multi-depth plane display". This script accompanies the pre-print version of 
+# the paper and is currently undergoing peer review.
+# For an explanation of the statistical analysis conducted, we refer readers to the statistical analysis 
+# section of the methods in the main manuscript.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2022
-# Last edited November 2022
+# Last edited March 2023
 
 # Corresponding authors SPS (s.smithers@northeastern.edu) and PJB (p.bex@northeastern.edu)
 
@@ -311,7 +312,7 @@ simulationOutput <- simulateResiduals(fittedModel = m0, plot = T, seed = NULL)
 m1a <-update(m0,~.-Target_Screen:Flanker_Screen)
 anova(m0, m1a, test = "LRT") # p< 2.2e-16 ***
 m1b <-update(m0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(m0, m1b, test = "LRT") # p = 0.8864
+anova(m0, m1b, test = "LRT") #  Chi = 0.2412, df = 2, p =  0.8864 # Reported in paper
 m1c <-update(m0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
 # We get a convergence warning. While this is not necessarily something to worry about, we can try adding more iterations by 
 # restarting from previous fit and using a different optimizer.
@@ -324,7 +325,7 @@ anova(m0, m1c, test = "LRT") # p = 0.3589
 m2a <-update(m1b,~.-Target_Screen:Flanker_Screen)
 anova(m1b, m2a, test = "LRT") # p < 2.2e-16 ***
 m2b <-update(m1b,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(m1b, m2b, test = "LRT") # p = 0.2003
+anova(m1b, m2b, test = "LRT") # Chi = 1.64, df = 1, p =  0.2003 # Reported in paper 
 # Drop Target_Flanker_Spacing_in_deg:Target_Screen
 
 #**************************************************************
@@ -509,57 +510,59 @@ Exp1_data <- AddExtraCols(Exp1_data)
 
 CountData <- CountDataFunction(Exp1_data)
 
+repeatno. = 10  
+
 PlotCountData <- subset(CountData, Perception == "Target in center of ring")
-Exp1_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp1_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_plot_TCenter
 
 PlotCountData <- subset(CountData, Perception == "Target not in center of ring")
-Exp1_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp1_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_plot_TOffCenter
 
 PlotCountData <- subset(CountData, Perception == "Ring obstructs target")
-Exp1_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp1_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_plot_TObstructed
 
 PlotCountData <- subset(CountData, Perception == "Target outside ring")
-Exp1_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp1_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_plot_TOutside
 
 PlotCountData <- subset(CountData, Perception == "Unsure or no ring")
-Exp1_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp1_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_plot_noRingOrUnsure
@@ -587,56 +590,58 @@ Exp2_data <- AddExtraCols(Exp2_data)
 
 CountData <- CountDataFunction(Exp2_data)
 
+repeatno. = 10
+
 PlotCountData <- subset(CountData, Perception == "Target in center of ring")
-Exp2_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp2_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_plot_TCenter
 
 PlotCountData <- subset(CountData, Perception == "Target not in center of ring")
-Exp2_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp2_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_plot_TOffCenter
 
 PlotCountData <- subset(CountData, Perception == "Ring obstructs target")
-Exp2_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp2_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_plot_TObstructed
 
 PlotCountData <- subset(CountData, Perception == "Target outside ring")
-Exp2_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp2_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_plot_TOutside
 
 PlotCountData <- subset(CountData, Perception == "Unsure or no ring")
-Exp2_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= FlankerDepth)) + 
+Exp2_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~TargetDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_plot_noRingOrUnsure
@@ -663,57 +668,59 @@ Exp3_data <- AddExtraCols(Exp3_data)
 
 CountData <- CountDataFunction(Exp3_data)
 
+repeatno. = 10  
+
 PlotCountData <- subset(CountData, Perception == "Target in center of ring")
-Exp3_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp3_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") +  ggtitle("Target in center of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Target depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TCenter
 
 PlotCountData <- subset(CountData, Perception == "Target not in center of ring")
-Exp3_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp3_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Target inside, but not in center, of flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TOffCenter
 
 PlotCountData <- subset(CountData, Perception == "Ring obstructs target")
-Exp3_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp3_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Flanker ring obstructs target") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TObstructed
 
 PlotCountData <- subset(CountData, Perception == "Target outside ring")
-Exp3_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp3_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Target outside flanker ring") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TOutside
 
 PlotCountData <- subset(CountData, Perception == "Unsure or no ring")
-Exp3_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp3_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("No flanker ring or unsure") +
-  scale_y_continuous(breaks= seq(0,10,1), limits=c(-0.2,10.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_noRingOrUnsure
@@ -741,62 +748,64 @@ Exp4_data <- AddExtraCols(Exp4_data)
 
 CountData <- CountDataFunction(Exp4_data)
 
+repeatno. = 8
+
 PlotCountData <- subset(CountData, Perception == "Target in center of ring")
-Exp4_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp4_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
   ggtitle("Target in center of flanker ring") +
-  scale_y_continuous(breaks= seq(0,8,1), limits=c(-0.2,8.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Target depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp4_plot_TCenter
 
 PlotCountData <- subset(CountData, Perception == "Target not in center of ring")
-Exp4_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp4_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
   ggtitle("Target inside, but not in center, of flanker ring") +
-  scale_y_continuous(breaks= seq(0,8,1), limits=c(-0.2,8.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp4_plot_TOffCenter
 
 PlotCountData <- subset(CountData, Perception == "Ring obstructs target")
-Exp4_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp4_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
   ggtitle("Flanker ring obstructs target") +
-  scale_y_continuous(breaks= seq(0,8,1), limits=c(-0.2,8.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp4_plot_TObstructed
 
 PlotCountData <- subset(CountData, Perception == "Target outside ring")
-Exp4_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp4_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
   ggtitle("Target outside flanker ring") +
-  scale_y_continuous(breaks= seq(0,8,1), limits=c(-0.2,8.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp4_plot_TOutside
 
 PlotCountData <- subset(CountData, Perception == "Unsure or no ring")
-Exp4_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= Count, fill= TargetDepth)) + 
+Exp4_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= TargetDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
   ggtitle("No flanker ring or unsure") +
-  scale_y_continuous(breaks= seq(0,8,1), limits=c(-0.2,8.2), expand=c(0,0),  name="Number of repeats") + 
+  scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp4_plot_noRingOrUnsure

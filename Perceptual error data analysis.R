@@ -1,11 +1,11 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
-# the perceptual error data in Smithers et al.- "Effect of depth on crowding investigated with a multi-depth 
-# plane display". This script accompanies the pre-print version of the paper and has not yet been peer reviewed.
-# For an explanation of the statistical analysis conducted, we refer readers to the statistical analysis section 
-# of the methods in the main manuscript.
+# the perceptual error data in Smithers et al.- "Large differences in target-flanker depth increase crowding- 
+# evidence from a multi-depth plane display". This script accompanies the pre-print version of the paper and 
+# is currently being peer reviewed. For an explanation of the statistical analysis conducted, please refer 
+# to the statistical analysis section of the methods in the main manuscript.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2022
-# Last edited November 2022
+# Last edited March 2023
 
 # Corresponding authors SPS (s.smithers@northeastern.edu) and PJB (p.bex@northeastern.edu)
 
@@ -137,7 +137,6 @@ Exp_2_boxplot <- ggplot(Exp2_data, aes(x=factor(Target_Flanker_Spacing_in_deg), 
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,120), expand=c(0,0), name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
-
 Exp_2_boxplot
 
 
@@ -217,8 +216,8 @@ ggsave(file ="Smithers et al- figures 4-6 (PerErr).svg", device = 'svg', plot = 
 ############################################################################
 banner("Statistical Analysis of Perceptual Error for the Main Manuscript", emph = TRUE)
 rm(list=ls(all=TRUE))
-# For the stats we do not include the control in the mixed effects models. A detailed explanation for this 
-# decision is provided in the supplementary material.
+# For the stats we do not include the control in the mixed effects models. An explanation for this decision 
+# is provided in the statistical analysis section of the methods in the main manuscript.
 
 ##===================================================================================================
 ##  STATS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth.   =
@@ -226,7 +225,7 @@ rm(list=ls(all=TRUE))
 boxup("STATS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth.", bandChar = "=")
 Exp1_data <-read.csv("Exp1_accumulatedPerErr.csv", header=T) # Load data
 Exp1_data<- subset(Exp1_data, Target_Flanker_Spacing_in_deg!=Inf) # Remove control (i.e. no flanker condition)
-#The explanation for why the control is removed is provided in the supplementary material. 
+#The explanation for why the control is removed is provided in the statistical analysis section of the methods.
 
 #Fit full mixed model containing fixed effects and all possible pairwise interactions of the fixed effects 
 Exp1_M0<-lmer(log(CircSD_deg)~ Target_Flanker_Spacing_in_deg+Flanker_Screen + 
@@ -246,12 +245,12 @@ plot(Exp1_M0)
 # Test significance of the interaction using a likelihood ratio rest (LRT) to compare the full model 
 # with the same model but with the interaction removed. 
 m1 <-update(Exp1_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(Exp1_M0, m1, test = "LRT") # Chisq=5.5642, Df=2, p= 0.06191
+anova(Exp1_M0, m1, test = "LRT") # Chisq=5.5642, Df=2, p= 0.06191 # Reported in paper
 # Drop 2-way interaction from the full model as it is not significant 
 
 # We then use the minimum model (i.e. model containing all fixed effects of interest plus any 
 # significant two-way interactions) to report the significance of each main effect or important 
-# interaction(s) by using a LRT to compare the minimum model with same model but with the 
+# interaction(s) (where applicable) by using a LRT to compare the minimum model with same model but with the 
 # effect/interaction of interest removed. 
 #***************************************************************
 #Stats reported in paper. 
@@ -290,7 +289,7 @@ plot(Exp2_M0)
 m1a <-update(Exp2_M0,~.-Target_Screen:Flanker_Screen)
 anova(Exp2_M0, m1a, test = "LRT") # Chisq=17.357, Df=2, p = 0.0001702 ***
 m1b <-update(Exp2_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(Exp2_M0, m1b, test = "LRT") # Chisq= 4.5239, Df=2, p = 0.1041
+anova(Exp2_M0, m1b, test = "LRT") # Chisq= 4.5239, Df=2, p = 0.1041 # Reported in paper
 m1C <-update(Exp2_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
 anova(Exp2_M0, m1C, test = "LRT") # Chisq=9.2907, Df=1, p = 0.002303 **
 #Drop the Target_Flanker_Spacing_in_deg:Flanker_Screen interaction
@@ -328,7 +327,7 @@ plot(Exp3_M0)
 #These look fine and acceptable. 
 
 m1 <-update(Exp3_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(Exp3_M0, m1, test = "LRT") #  Chisq=3.5483 , Df=2, p = 0.1696.
+anova(Exp3_M0, m1, test = "LRT") #  Chisq=3.5483 , Df=2, p = 0.1696. # Reported in paper
 #Drop the Target_Flanker_Spacing_in_deg:Target_Screen interaction
 
 #*#***************************************************************
@@ -369,7 +368,7 @@ plot(Exp4_M0)
 m1a <-update(Exp4_M0,~.-Target_Screen:Flanker_Screen)
 anova(Exp4_M0, m1a, test = "LRT") # Chisq=62.063  Df=2, p = 3.336e-14 ***
 m1b <-update(Exp4_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(Exp4_M0, m1b, test = "LRT") # Chisq= 0.1387, Df=1, p = 0.7096
+anova(Exp4_M0, m1b, test = "LRT") # Chisq= 0.1387, Df=1, p = 0.7096 # Reported in paper
 m1C <-update(Exp4_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
 anova(Exp4_M0, m1C, test = "LRT") # Chisq=1.4339, Df=2, p = 0.4882
 #Drop the Target_Flanker_Spacing_in_deg:Flanker_Screen interaction
@@ -377,7 +376,7 @@ anova(Exp4_M0, m1C, test = "LRT") # Chisq=1.4339, Df=2, p = 0.4882
 m2a <-update(m1b,~.-Target_Screen:Flanker_Screen)
 anova(m1b, m2a, test = "LRT") # Chisq=62.046 , Df=2, p = 3.364e-14 ***
 m2b <-update(m1b,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(m1b, m2b, test = "LRT") # Chisq=1.4335, Df=2, p = 0.4883
+anova(m1b, m2b, test = "LRT") # Chisq=1.4335, Df=2, p = 0.4883 # Reported in paper
 #Drop Target_Flanker_Spacing_in_deg:Target_Screen
 
 #***************************************************************
@@ -413,7 +412,7 @@ plot(Exp5_M0)
 #These look fine and acceptable. 
 
 m1 <-update(Exp5_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(Exp5_M0, m1, test = "LRT") # Chisq=1.7161, Df=2, p = 0.424
+anova(Exp5_M0, m1, test = "LRT") # Chisq=1.7161, Df=2, p = 0.424 # Reported in paper
 #Drop Target_Flanker_Spacing_in_deg:Target_Screen interaction
 
 #***************************************************************
@@ -594,7 +593,7 @@ plot(Exp1_M0)
 #These look acceptable. 
 
 m1 <-update(Exp1_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(Exp1_M0, m1, test = "LRT") # Chisq=1.9162, Df=2, p = 0.3836
+anova(Exp1_M0, m1, test = "LRT") # Chisq=1.9162, Df=2, p = 0.3836 # Reported in supplementary material. 
 # 2-way interaction is not significant so it is dropped
 
 #***************************************************************
@@ -632,7 +631,7 @@ plot(Exp2_M0)
 #These look fine and acceptable. 
 
 m1a <-update(Exp2_M0,~.-Target_Screen:Flanker_Screen)
-anova(Exp2_M0, m1a, test = "LRT") # Chisq=3.4421, Df=2, p = 0.1789
+anova(Exp2_M0, m1a, test = "LRT") # Chisq=3.4421, Df=2, p = 0.1789 # Reported in supplementary material
 m1b <-update(Exp2_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
 anova(Exp2_M0, m1b, test = "LRT") # Chisq= 5.1059, Df=2, p = 0.07785
 m1C <-update(Exp2_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
@@ -640,7 +639,7 @@ anova(Exp2_M0, m1C, test = "LRT") # Chisq=7.0476, Df=1, p = 0.007937 **
 #Drop the Target_Screen:Flanker_Screen interaction
 
 m2a <-update(m1a,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(m1a, m2a, test = "LRT") # Chisq= 4.8548, Df=2, p = 0.08827
+anova(m1a, m2a, test = "LRT") # Chisq= 4.8548, Df=2, p = 0.08827 # Reported in supplementary material
 m2b <-update(m1a,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
 anova(m1a, m2b, test = "LRT") # Chisq=7.1249, Df=1, p = 0.007602 **
 #Drop the Target_Flanker_Spacing_in_deg:Flanker_Screen interaction
@@ -678,7 +677,7 @@ plot(Exp3_M0)
 #These look fine and acceptable. 
 
 m1 <-update(Exp3_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(Exp3_M0, m1, test = "LRT") #  Chisq=3.5874, Df=2, p = 0.1663
+anova(Exp3_M0, m1, test = "LRT") #  Chisq=3.5874, Df=2, p = 0.1663 # Reported in supplementary material
 
 #****************************************************************
 #m1 is the min model. These are the stats reported in the supplementary material
@@ -719,13 +718,13 @@ anova(Exp4_M0, m1a, test = "LRT") # Chisq=8.4162  Df=2, p = 0.01487 *
 m1b <-update(Exp4_M0,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
 anova(Exp4_M0, m1b, test = "LRT") # Chisq= 0.79, Df=1, p = 0.3741
 m1c <-update(Exp4_M0,~.-Target_Flanker_Spacing_in_deg:Target_Screen)
-anova(Exp4_M0, m1c, test = "LRT") # Chisq=0.981, Df=2, p = 0.6123
+anova(Exp4_M0, m1c, test = "LRT") # Chisq=0.981, Df=2, p = 0.6123 # Reported in supplementary material
 #Drop the Target_Flanker_Spacing_in_deg:Target_Screen interaction
 
 m2a <-update(m1c,~.-Target_Screen:Flanker_Screen)
 anova(m1c, m2a, test = "LRT") # Chisq=8.5752, Df=2, p = 0.01374 *
 m2b <-update(m1c,~.-Target_Flanker_Spacing_in_deg:Flanker_Screen)
-anova(m1c, m2b, test = "LRT") # Chisq=0.6364, Df=1, p = 0.425
+anova(m1c, m2b, test = "LRT") # Chisq=0.6364, Df=1, p = 0.425 # Reported in supplementary material
 #Drop Target_Flanker_Spacing_in_deg:Flanker_Screen
 
 #***************************************************************

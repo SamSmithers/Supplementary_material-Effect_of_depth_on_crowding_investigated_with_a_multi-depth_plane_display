@@ -1,5 +1,5 @@
 # Supplementary materials: Large differences in target-flanker depth can increase crowding- evidence from a multi-depth plane display (Pre-print/under review)
-### Supplementary information for: *Large differences in target-flanker depth increase crowding- evidence from a multi-depth plane display.* Samuel P. Smithers, Yulong Shao, James Altham, and Peter J. Bex. 
+### Supplementary information for: *Large differences in target-flanker depth can increase crowding- evidence from a multi-depth plane display.* Samuel P. Smithers, Yulong Shao, James Altham, and Peter J. Bex. 
 
 ## Repository contents
 - Raw date from Experiments 1-5 (files ending "*_rawData.csv*").

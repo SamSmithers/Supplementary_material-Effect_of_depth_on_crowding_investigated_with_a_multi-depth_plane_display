@@ -1,24 +1,23 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
 # the data for the perceived position of the target relative to the flanker ring that was reported by the 
-# subject's in experiments 1-4 in Smithers et al.- "Large differences in target-flanker depth increase 
-# crowding- evidence from a multi-depth plane display". This script accompanies the pre-print version of the
-# paper and is currently undergoing peer review. For an explanation of the statistical analysis conducted, 
+# subject's in experiments 1-4 in Smithers et al.- "Large differences in target-flanker depth can increase 
+# crowding- evidence from a multi-depth plane display". For an explanation of the statistical analysis conducted, 
 # please refer to the statistical analysis section of the methods in the main manuscript.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2022
-# Last edited March 2023
+# Last edited July 2023
 
 # Corresponding authors SPS (s.smithers@northeastern.edu) and PJB (p.bex@northeastern.edu)
 
 # Included in this script:
-# - Code used to generate Figures 7 and 8 from the main manuscript.
+# - Code used to generate Figures 8 and 9 from the main manuscript.
 # - Code used for the statistical analysis of perceived target position that is reported in the main manuscript.
-# - Code used to generate Figures S1,S2, S3, and S4 from the supplementary material.
+# - Code used to generate Figure 8-figure supplements 1 and 2, and Figure 9-figure supplement 1 and 2.
 
 # Session info:
 # R version 4.2.2 (2022-10-31 ucrt)
 # Platform: x86_64-w64-mingw32/x64 (64-bit)
-# Running under: Windows 10 x64 (build 19044)
+# Running under: Windows 10 x64 (build 19045)
 # 
 # Matrix products: default
 # 
@@ -30,22 +29,22 @@
 #   [1] stats     graphics  grDevices utils     datasets  methods   base     
 # 
 # other attached packages:
-#   [1] bannerCommenter_1.0.0 DHARMa_0.4.6          lme4_1.1-31           Matrix_1.5-1          gridExtra_2.3         svglite_2.1.0        
-# [7] ggh4x_0.2.3           ggplot2_3.4.0        
+#   [1] bannerCommenter_1.0.0 DHARMa_0.4.6          lme4_1.1-31           Matrix_1.5-1          cowplot_1.1.1         gridExtra_2.3        
+# [7] svglite_2.1.0         ggplot2_3.4.0        
 # 
 # loaded via a namespace (and not attached):
-#   [1] gap_1.3-1          Rcpp_1.0.9         pillar_1.8.1       compiler_4.2.2     nloptr_2.0.3       tools_4.2.2        boot_1.3-28       
-# [8] lifecycle_1.0.3    tibble_3.1.8       gtable_0.3.1       nlme_3.1-160       lattice_0.20-45    pkgconfig_2.0.3    rlang_1.0.6       
-# [15] cli_3.4.1          withr_2.5.0        dplyr_1.0.10       gap.datasets_0.0.5 generics_0.1.3     vctrs_0.5.0        systemfonts_1.0.4 
-# [22] grid_4.2.2         tidyselect_1.2.0   glue_1.6.2         R6_2.5.1           fansi_1.0.3        minqa_1.2.5        farver_2.1.1      
-# [29] magrittr_2.0.3     scales_1.2.1       splines_4.2.2      MASS_7.3-58.1      colorspace_2.0-3   utf8_1.2.2         munsell_0.5.0     
+#   [1] Rcpp_1.0.9        pillar_1.8.1      compiler_4.2.2    nloptr_2.0.3      tools_4.2.2       boot_1.3-28       lifecycle_1.0.3   tibble_3.2.1     
+# [9] nlme_3.1-160      gtable_0.3.1      lattice_0.20-45   pkgconfig_2.0.3   rlang_1.1.0       cli_3.6.1         rstudioapi_0.14   withr_2.5.0      
+# [17] dplyr_1.1.1       generics_0.1.3    vctrs_0.6.1       systemfonts_1.0.4 grid_4.2.2        tidyselect_1.2.0  glue_1.6.2        R6_2.5.1         
+# [25] fansi_1.0.3       minqa_1.2.5       magrittr_2.0.3    scales_1.2.1      MASS_7.3-58.1     splines_4.2.2     colorspace_2.0-3  utf8_1.2.2       
+# [33] munsell_0.5.0       
 
 ##Required dependencies/packages. 
 #For plots
 library(ggplot2) # For graphs
-library(ggh4x) # For force_panelsizes() to control the size of individual facets 
 library(svglite) # Required to save .svg files (optional)
 library(gridExtra) # For arranging/combining plots (optional)
+library(cowplot) # for ggsave and arranging plots (optional)
 #For stats
 library(lme4) # Used for mixed effects models
 library(DHARMa) # For residual diagnostics
@@ -59,11 +58,11 @@ setwd("***Pathway to folder containing this R script and all '_accumulatedPerErr
 #############################################################################################################
 #############################################################################################################
 ###                                                                                                       ###
-###  PERCEIVED TARGET POSITION RELATIVE TO FLANKER RING GRAPHS FOR THE MAIN MANUSCRIPT (FIGURES 7 AND 8)  ###
+###  PERCEIVED TARGET POSITION RELATIVE TO FLANKER RING GRAPHS FOR THE MAIN MANUSCRIPT (FIGURES 8 AND 9)  ###
 ###                                                                                                       ###
 #############################################################################################################
 #############################################################################################################
-banner("Perceived Target Position Relative to Flanker Ring Graphs for the Main Manuscript (Figures 7 and 8)", emph = TRUE)
+banner("Perceived Target Position Relative to Flanker Ring Graphs for the Main Manuscript (Figures 8 and 9)", emph = TRUE)
 
 #Colour blind friendly palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#D55E00", "#0072B2", "#CC79A7","#F0E442")
@@ -100,6 +99,11 @@ AddExtraCols <- function(Inputdata){
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "far"] <- "4"
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "mid"] <- "1.26"
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "near"] <- "0.4"
+  # Make column for fixation depth in m
+  Inputdata["FixationDepth_in_m"] <- Inputdata$Fixation_Screen
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "far"] <- "4"
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "mid"] <- "1.26"
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "near"] <- "0.4"
   return(Inputdata)
 }
 
@@ -113,9 +117,9 @@ ProportionInsideT <- function(Inputdata, repeatno.){
 }
 
 ##================================================================================================================
-##  GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 7A)   =
+##  GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 8A)   =
 ##================================================================================================================
-boxup("GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 7A)", bandChar = "=")
+boxup("GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 8A)", bandChar = "=")
 
 Exp1_data <-read.csv("Exp1_accumulatedPerErr.csv", header=T) # Load data
 Exp1_data <- AddExtraCols(Exp1_data)
@@ -128,16 +132,16 @@ Exp1_PropInsideT <- ggplot(Exp1_data, aes(x=factor(Target_Flanker_Spacing_in_deg
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), 
              shape =21,  size=1.5, alpha=0.5, colour = 'black') +
-  facet_wrap(~TargetDepth_in_m,ncol = 3) +
+  facet_wrap(~FixationDepth_in_m,ncol = 3) +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp1_PropInsideT
 
 ##=====================================================================================================================
-##  GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 7B)   =
+##  GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 8B)   =
 ##=====================================================================================================================
-boxup("GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 7B)", bandChar = "=")
+boxup("GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 8B)", bandChar = "=")
 
 Exp2_data <-read.csv("Exp2_accumulatedPerErr.csv", header=T) # Load data
 Exp2_data <- AddExtraCols(Exp2_data)
@@ -150,16 +154,16 @@ Exp2_PropInsideT <- ggplot(Exp2_data, aes(x=factor(Target_Flanker_Spacing_in_deg
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), 
              shape =21,  size=1.5, alpha=0.5, colour = 'black') +
-  facet_wrap(~TargetDepth_in_m,ncol = 3) +
+  facet_wrap(~FixationDepth_in_m,ncol = 3) +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp2_PropInsideT
 
 ##===============================================================================================================
-##  GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 8A)   =
+##  GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 9A)   =
 ##===============================================================================================================
-boxup("GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 8A)", bandChar = "=")
+boxup("GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 9A)", bandChar = "=")
 
 Exp3_data <-read.csv("Exp3_accumulatedPerErr.csv", header=T)
 Exp3_data <- AddExtraCols(Exp3_data)
@@ -172,16 +176,16 @@ Exp3_PropInsideT <- ggplot(Exp3_data, aes(x=factor(Target_Flanker_Spacing_in_deg
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), 
              shape =21,  size=1.5, alpha=0.5, colour = 'black') +
-  facet_wrap(~FlankerDepth_in_m,ncol = 3,scales = "free_x") + force_panelsizes(cols = c(1, 1/4)) +
+  facet_wrap(~FixationDepth_in_m,ncol = 3) +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Target depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_PropInsideT
 
 ##=====================================================================================================================
-##  GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 8B)   =
+##  GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 9B)   =
 ##=====================================================================================================================
-boxup("GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 8B)", bandChar = "=")
+boxup("GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 9B)", bandChar = "=")
 
 Exp4_data <-read.csv("Exp4_accumulatedPerErr.csv", header=T)
 Exp4_data <- AddExtraCols(Exp4_data)
@@ -194,7 +198,7 @@ Exp4_PropInsideT <- ggplot(Exp4_data, aes(x=factor(Target_Flanker_Spacing_in_deg
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), 
              shape =21,  size=1.5, alpha=0.5, colour = 'black') +
-  facet_wrap(~FlankerDepth_in_m,ncol = 3,scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth_in_m,ncol = 3) + 
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Target depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -207,9 +211,9 @@ boxup("GRAPHS: Save graphs as .svg files", bandChar = "-")
 # The graphs are then saved as a .svg file to enable formatting, labeling, and other 
 # edits required to prepare the figures for the paper.
 
-CombinedPlots <- grid.arrange(Exp1_PropInsideT, Exp2_PropInsideT,Exp3_PropInsideT,Exp4_PropInsideT, ncol = 2)
+CombinedPlots <- plot_grid(Exp1_PropInsideT, Exp2_PropInsideT,Exp3_PropInsideT,Exp4_PropInsideT, ncol = 2, rel_widths = c(5/8, 1))
 # Combined plots will be saved to your working directory
-ggsave(file ="Smithers et al- figures 7-8 (PropInsideRing).svg", device = 'svg', plot = CombinedPlots, width = 25, height = 15)
+ggsave(file ="Smithers et al- figures 8-9 (PropInsideRing).svg", device = 'svg', plot = CombinedPlots, width = 25, height = 15)
 
 ############################################################################################################
 ############################################################################################################
@@ -428,14 +432,14 @@ anova(m0, m1c, test = "LRT") # Chisq= 23.267, Df=2, p = 8.862e-06 ***
 rm(dir,all_files,Collated_Raw_Data,df,m0,m1a,m1b,m1c,ss)
 
 
-##################################################################################################################
-##################################################################################################################
-###                                                                                                            ###
-###  PERCEIVED TARGET POSITION RELATIVE TO FLANKER RING GRAPHS FOR THE SUPPLEMENTARY MATERIAL (FIGURES S1-S4)  ###
-###                                                                                                            ###
-##################################################################################################################
-##################################################################################################################
-banner("Perceived Target Position Relative to Flanker Ring Graphs for the Supplementary Material (Figures S1-S4)", emph = TRUE)
+##################################################################################################################################################
+##################################################################################################################################################
+###                                                                                                                                            ###
+###  PERCEIVED TARGET POSITION RELATIVE TO FLANKER RING GRAPHS FOR FIGURE 8-FIGURE SUPPLEMENT 1 AND 2, AND FIGURE 9-FIGURE SUPPLEMENT 1 AND 2  ###
+###                                                                                                                                            ###
+##################################################################################################################################################
+##################################################################################################################################################
+banner("Perceived Target Position Relative to Flanker Ring Graphs for Figure 8-figure supplement 1 and 2, and Figure 9-figure supplement 1 and 2", emph = TRUE)
 
 # Colour blind friendly palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#D55E00", "#0072B2", "#CC79A7","#F0E442")
@@ -472,6 +476,11 @@ AddExtraCols <- function(Inputdata){
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "far"] <- "4"
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "mid"] <- "1.26"
   Inputdata$TargetDepth_in_m[Inputdata$TargetDepth_in_m == "near"] <- "0.4"
+  # Make column for fixation depth in m
+  Inputdata["FixationDepth_in_m"] <- Inputdata$Fixation_Screen
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "far"] <- "4"
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "mid"] <- "1.26"
+  Inputdata$FixationDepth_in_m[Inputdata$FixationDepth_in_m == "near"] <- "0.4"
   return(Inputdata)
 }
 
@@ -482,6 +491,7 @@ CountDataFunction <- function(Inputdata){
   TargetFlankerSpacing <-c()
   FlankerDepth <- c()
   TargetDepth <- c()
+  FixationDepth <- c()
   Count <-append(Count,Inputdata$PerceivedPosCount_TCenter)
   Perception <- append(Perception, rep("Target in center of ring",length(Inputdata$PerceivedPosCount_TCenter)))
   Count <-append(Count,Inputdata$PerceivedPosCount_TOffCenter)
@@ -495,14 +505,15 @@ CountDataFunction <- function(Inputdata){
   TargetFlankerSpacing <- append(TargetFlankerSpacing, rep(Inputdata$Target_Flanker_Spacing_in_deg,5))
   FlankerDepth <- append(FlankerDepth,rep(Inputdata$FlankerDepth_in_m,5))
   TargetDepth <- append(TargetDepth,rep(Inputdata$TargetDepth_in_m,5))
-  CountData <- data.frame(Count,Perception, TargetFlankerSpacing, FlankerDepth, TargetDepth)
+  FixationDepth <- append(FixationDepth,rep(Inputdata$FixationDepth_in_m,5))
+  CountData <- data.frame(Count,Perception, TargetFlankerSpacing, FlankerDepth, TargetDepth, FixationDepth)
   return(CountData) 
 }
 
-##===============================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure S1).   =
-##===============================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure S1).", bandChar = "=")
+##==================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 8-figure supplement 1).   =
+##==================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 8-figure supplement 1).", bandChar = "=")
 
 Exp1_data <-read.csv("Exp1_accumulatedPerErr.csv", header=T) # Load data
 Exp1_data <- AddExtraCols(Exp1_data)
@@ -516,7 +527,7 @@ Exp1_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing)
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -527,7 +538,7 @@ Exp1_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpaci
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -538,7 +549,7 @@ Exp1_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpac
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -549,7 +560,7 @@ Exp1_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -560,7 +571,7 @@ Exp1_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerS
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -576,13 +587,13 @@ boxup("SUPPLEMENTARY GRAPHS: Save figure S1 as .svg files", bandChar = "-")
 #Save plots
 JoinedPlots <- grid.arrange(Exp1_plot_TCenter, Exp1_plot_TOffCenter, Exp1_plot_TObstructed, 
                             Exp1_plot_TOutside, Exp1_plot_noRingOrUnsure, ncol = 2)
-ggsave(file ="Smithers et al- supplementary figure S1 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
+ggsave(file ="Smithers et al- Figure 8-figure supplement 1 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
 
 
-##=====================================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure S2).   =
-##=====================================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure S2).", bandChar = "=")
+##=======================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 8-figure supplement 2).   =
+##=======================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 8-figure supplement 2).", bandChar = "=")
 
 Exp2_data <-read.csv("Exp2_accumulatedPerErr.csv", header=T) # Load data
 Exp2_data <- AddExtraCols(Exp2_data)
@@ -595,7 +606,7 @@ PlotCountData <- subset(CountData, Perception == "Target in center of ring")
 Exp2_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing), y= (Count/repeatno.), fill= FlankerDepth)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target in center of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + Graph.theme + scale_fill_manual(values=cbPalette) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -606,7 +617,7 @@ Exp2_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpaci
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -617,7 +628,7 @@ Exp2_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpac
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -628,7 +639,7 @@ Exp2_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -639,7 +650,7 @@ Exp2_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerS
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~TargetDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
@@ -655,12 +666,12 @@ boxup("SUPPLEMENTARY GRAPHS: Save figure S2 as .svg files", bandChar = "-")
 #Save plots
 JoinedPlots <- grid.arrange(Exp2_plot_TCenter, Exp2_plot_TOffCenter, Exp2_plot_TObstructed, 
                             Exp2_plot_TOutside, Exp2_plot_noRingOrUnsure, ncol = 2)
-ggsave(file ="Smithers et al- supplementary figure S2 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
+ggsave(file ="Smithers et al- Figure 8-figure supplement 2 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
 
-##==============================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure S3)   =
-##==============================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure S3)", bandChar = "=")
+##================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 9-figure supplement 1)   =
+##================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 9-figure supplement 1)", bandChar = "=")
 
 Exp3_data <-read.csv("Exp3_accumulatedPerErr.csv", header=T) # Load data
 Exp3_data <- AddExtraCols(Exp3_data)
@@ -674,9 +685,9 @@ Exp3_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing)
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") +  ggtitle("Target in center of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) +  ggtitle("Target in center of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
-  guides(fill=guide_legend(title="Target depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
+  guides(fill=guide_legend(title="Target depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TCenter
 
@@ -685,9 +696,9 @@ Exp3_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpaci
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Target inside, but not in center, of flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target inside, but not in center, of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
-  guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
+  guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TOffCenter
 
@@ -696,9 +707,9 @@ Exp3_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpac
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Flanker ring obstructs target") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Flanker ring obstructs target") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
-  guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
+  guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TObstructed
 
@@ -707,9 +718,9 @@ Exp3_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("Target outside flanker ring") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("Target outside flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
-  guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
+  guides(fill=guide_legend(title="Flanker depth (m)")) + 
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_TOutside
 
@@ -718,9 +729,9 @@ Exp3_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerS
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + ggtitle("No flanker ring or unsure") +
+  facet_wrap(~FixationDepth,ncol = 3) + ggtitle("No flanker ring or unsure") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
-  guides(fill=guide_legend(title="Flanker depth (m)")) + force_panelsizes(cols = c(1, 1/4)) +
+  guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers")) 
 Exp3_plot_noRingOrUnsure
 
@@ -734,13 +745,13 @@ boxup("SUPPLEMENTARY GRAPHS: Save figure S3 as .svg files", bandChar = "-")
 #Save plots
 JoinedPlots <- grid.arrange(Exp3_plot_TCenter, Exp3_plot_TOffCenter, Exp3_plot_TObstructed, 
                             Exp3_plot_TOutside, Exp3_plot_noRingOrUnsure, ncol = 2)
-ggsave(file ="Smithers et al- supplementary figure S3 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
+ggsave(file ="Smithers et al- Figure 9-figure supplement 1 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
 
 
-##====================================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure S4)   =
-##====================================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure S4)", bandChar = "=")
+##======================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 9-figure supplement 2)   =
+##======================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 9-figure supplement 2)", bandChar = "=")
 
 Exp4_data <-read.csv("Exp4_accumulatedPerErr.csv", header=T) # Load data
 Exp4_data <- AddExtraCols(Exp4_data)
@@ -754,7 +765,7 @@ Exp4_plot_TCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing)
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth,ncol = 3) + 
   ggtitle("Target in center of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Target depth (m)")) +
@@ -766,7 +777,7 @@ Exp4_plot_TOffCenter <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpaci
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth,ncol = 3) + 
   ggtitle("Target inside, but not in center, of flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
@@ -778,7 +789,7 @@ Exp4_plot_TObstructed <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpac
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth,ncol = 3) + 
   ggtitle("Flanker ring obstructs target") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
@@ -790,7 +801,7 @@ Exp4_plot_TOutside <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerSpacing
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth,ncol = 3) + 
   ggtitle("Target outside flanker ring") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
@@ -802,7 +813,7 @@ Exp4_plot_noRingOrUnsure <- ggplot(PlotCountData, aes(x=as.factor(TargetFlankerS
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + 
   geom_point(position = position_jitterdodge(jitter.width = 0.3, dodge.width = 1), shape =21,  size=1.5, alpha=0.5, colour = 'black') +
   xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
-  facet_wrap(~FlankerDepth,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~FixationDepth,ncol = 3) + 
   ggtitle("No flanker ring or unsure") +
   scale_y_continuous(breaks= seq(0,1,0.2), limits=c(-0.02,1.02), expand=c(0,0),  name="Proportion of trials") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
@@ -819,4 +830,4 @@ boxup("SUPPLEMENTARY GRAPHS: Save figure S4 as .svg files", bandChar = "-")
 #Save plots
 JoinedPlots <- grid.arrange(Exp4_plot_TCenter, Exp4_plot_TOffCenter, Exp4_plot_TObstructed, 
                             Exp4_plot_TOutside, Exp4_plot_noRingOrUnsure, ncol = 2)
-ggsave(file ="Smithers et al- supplementary figure S4 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)
+ggsave(file ="Smithers et al- Figure 9-figure supplement 2 (PerceivedTargetPos).svg", device = 'svg', plot = JoinedPlots, width = 23, height = 22)

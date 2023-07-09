@@ -1,49 +1,51 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
-# the perceptual error data in Smithers et al.- "Large differences in target-flanker depth increase crowding- 
-# evidence from a multi-depth plane display". This script accompanies the pre-print version of the paper and 
-# is currently being peer reviewed. For an explanation of the statistical analysis conducted, please refer 
+# the perceptual error data in Smithers et al.- "Large differences in target-flanker depth can increase crowding- 
+# evidence from a multi-depth plane display". For an explanation of the statistical analysis conducted, please refer 
 # to the statistical analysis section of the methods in the main manuscript.
 
-# Script written by Dr Samuel P. Smithers, Northeastern University, 2022
-# Last edited March 2023
+# Script written by Dr Samuel P. Smithers, Northeastern University, 2022-2023
+# Last edited July 2023
 
 # Corresponding authors SPS (s.smithers@northeastern.edu) and PJB (p.bex@northeastern.edu)
 
 # Included in this script:
-# - Code used to generate Figures 4, 5, and 6 from the main manuscript.
+# - Code used to generate Figures 5, 6 and 7 from the main manuscript.
 # - Code used for the statistical analysis of perceptual error that is reported in the main manuscript.
-# - Code used to generate Figures S5 and S6 from the supplementary material.
-# - Code used for the supporting statistical analysis of perceptual error that is reported in the supplementary material.
+# - Code used to generate Figure 5-figure supplement 1 and Figure 6-figure supplement 1.
+# - Code used for the supporting statistical analysis of perceptual error that is reported in the legend 
+# for Figure 5-figure supplement 1 and Figure 6-figure supplement 1.
 
 # Session info:
 # R version 4.2.2 (2022-10-31 ucrt)
 # Platform: x86_64-w64-mingw32/x64 (64-bit)
-# Running under: Windows 10 x64 (build 19044)
+# Running under: Windows 10 x64 (build 19045)
 # 
 # Matrix products: default
 # 
 # locale:
-#   [1] LC_COLLATE=English_United States.utf8  LC_CTYPE=English_United States.utf8    LC_MONETARY=English_United States.utf8 LC_NUMERIC=C                          
-# [5] LC_TIME=English_United States.utf8    
+#   [1] LC_COLLATE=English_United States.utf8  LC_CTYPE=English_United States.utf8    LC_MONETARY=English_United States.utf8
+# [4] LC_NUMERIC=C                           LC_TIME=English_United States.utf8    
 # 
 # attached base packages:
 #   [1] stats     graphics  grDevices utils     datasets  methods   base     
 # 
 # other attached packages:
-#   [1] bannerCommenter_1.0.0 lme4_1.1-31           Matrix_1.5-1          gridExtra_2.3         svglite_2.1.0         ggh4x_0.2.3           ggplot2_3.4.0        
+#   [1] bannerCommenter_1.0.0 lme4_1.1-31           Matrix_1.5-1          cowplot_1.1.1         gridExtra_2.3         svglite_2.1.0        
+# [7] ggplot2_3.4.0        
 # 
 # loaded via a namespace (and not attached):
-#   [1] Rcpp_1.0.9        pillar_1.8.1      compiler_4.2.2    nloptr_2.0.3      tools_4.2.2       boot_1.3-28       lifecycle_1.0.3   tibble_3.1.8      gtable_0.3.1     
-# [10] nlme_3.1-160      lattice_0.20-45   pkgconfig_2.0.3   rlang_1.0.6       cli_3.4.1         withr_2.5.0       dplyr_1.0.10      generics_0.1.3    vctrs_0.5.0      
-# [19] systemfonts_1.0.4 grid_4.2.2        tidyselect_1.2.0  glue_1.6.2        R6_2.5.1          fansi_1.0.3       minqa_1.2.5       farver_2.1.1      magrittr_2.0.3   
-# [28] scales_1.2.1      splines_4.2.2     MASS_7.3-58.1     colorspace_2.0-3  utf8_1.2.2        munsell_0.5.0    
+#   [1] Rcpp_1.0.9        pillar_1.8.1      compiler_4.2.2    nloptr_2.0.3      tools_4.2.2       boot_1.3-28       lifecycle_1.0.3   tibble_3.2.1     
+# [9] nlme_3.1-160      gtable_0.3.1      lattice_0.20-45   pkgconfig_2.0.3   rlang_1.1.0       cli_3.6.1         rstudioapi_0.14   withr_2.5.0      
+# [17] dplyr_1.1.1       generics_0.1.3    vctrs_0.6.1       systemfonts_1.0.4 grid_4.2.2        tidyselect_1.2.0  glue_1.6.2        R6_2.5.1         
+# [25] fansi_1.0.3       minqa_1.2.5       magrittr_2.0.3    scales_1.2.1      MASS_7.3-58.1     splines_4.2.2     colorspace_2.0-3  utf8_1.2.2       
+# [33] munsell_0.5.0    
 
 ## Required dependencies/packages. 
 #For plots
 library(ggplot2) # For graphs
-library(ggh4x) # For force_panelsizes() to control the size of individual facets 
 library(svglite) # Required to save .svg files (optional)
 library(gridExtra) # For arranging/combining plots (optional)
+library(cowplot) # for ggsave and arranging plots (optional)
 #For stats
 library(lme4) # Used for mixed effects models (also requires Matrix)
 #Other
@@ -57,11 +59,11 @@ setwd("***Pathway to folder containing this R script and all '_accumulatedPerErr
 ##############################################################################
 ##############################################################################
 ###                                                                        ###
-###  PERCEPTUAL ERROR GRAPHS FOR THE MAIN MANUSCRIPT (FIGURES 4, 5 AND 6)  ###
+###  PERCEPTUAL ERROR GRAPHS FOR THE MAIN MANUSCRIPT (FIGURES 5, 6 AND 7)  ###
 ###                                                                        ###
 ##############################################################################
 ##############################################################################
-banner("Perceptual Error Graphs for the Main Manuscript (Figures 4, 5 and 6)", emph = TRUE)
+banner("Perceptual Error Graphs for the Main Manuscript (Figures 5, 6 and 7)", emph = TRUE)
 
 #Colour blind friendly palette
 cbPalette <- c("#E69F00", "#56B4E9", "#009E73", "#D55E00", "#0072B2", "#CC79A7","#F0E442")
@@ -98,13 +100,18 @@ AddExtraCols <- function(Inputdata){
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "far"] <- "4"
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "mid"] <- "1.26"
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "near"] <- "0.4"
+  # Make column for fixation depth in m
+  Inputdata["Fixation_depth_in_m"] <- Inputdata$Fixation_Screen
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "far"] <- "4"
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "mid"] <- "1.26"
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "near"] <- "0.4"
   return(Inputdata)
 }
 
 ##=================================================================================================================
-##  GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 4A)    =
+##  GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 5A)    =
 ##=================================================================================================================
-boxup("GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 4A)", bandChar = "=")
+boxup("GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 5A)", bandChar = "=")
 
 Exp1_data <-read.csv("Exp1_accumulatedPerErr.csv", header=T) # Load data
 Exp1_data <- AddExtraCols(Exp1_data)
@@ -114,16 +121,16 @@ print(N) # N=22
 Exp_1_boxplot <- ggplot(Exp1_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Flanker_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Target_depth_in_m,ncol = 3) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 3) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,130), expand=c(0,0),  name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_1_boxplot 
 
 ##======================================================================================================================
-##  GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 4B)    =
+##  GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 5B)    =
 ##======================================================================================================================
-boxup("GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 4B)", bandChar = "=")
+boxup("GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 5B)", bandChar = "=")
 
 Exp2_data <-read.csv("Exp2_accumulatedPerErr.csv", header=T)
 Exp2_data <- AddExtraCols(Exp2_data)
@@ -133,7 +140,7 @@ print(N) # N=19
 Exp_2_boxplot <- ggplot(Exp2_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Flanker_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme  + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Target_depth_in_m,ncol = 2) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 2) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,120), expand=c(0,0), name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
@@ -141,9 +148,9 @@ Exp_2_boxplot
 
 
 ##===============================================================================================================
-##  GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 5A)   =
+##  GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 6A)   =
 ##===============================================================================================================
-boxup("GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 5A)", bandChar = "=")
+boxup("GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 6A)", bandChar = "=")
 
 Exp3_data <-read.csv("Exp3_accumulatedPerErr.csv", header=T)
 Exp3_data <- AddExtraCols(Exp3_data)
@@ -153,16 +160,16 @@ print(N) # N=21
 Exp_3_boxplot <- ggplot(Exp3_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Target_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Flanker_depth_in_m,ncol = 2, scales = "free_x") + force_panelsizes(cols = c(1, 1/4)) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 2, scales = "free_x") + force_panelsizes(cols = c(1, 1/4)) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,150), expand=c(0,0),  name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Target depth (m)"))+
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_3_boxplot
 
 ##=====================================================================================================================
-##  GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 5B)   =
+##  GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 6B)   =
 ##=====================================================================================================================
-boxup("GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 5B)", bandChar = "=")
+boxup("GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 6B)", bandChar = "=")
 
 Exp4_data <-read.csv("Exp4_accumulatedPerErr.csv", header=T)
 Exp4_data <- AddExtraCols(Exp4_data)
@@ -172,16 +179,16 @@ print(N) # N=21
 Exp_4_boxplot <- ggplot(Exp4_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Target_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme  + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Flanker_depth_in_m,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 3) + force_panelsizes(cols = c(1, 1, 1/3)) +
   scale_y_continuous(breaks= seq(0,180,20),limits=c(0,140), expand=c(0,0), name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Target depth (m)"))+
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_4_boxplot 
 
 ##=======================================================================================
-##  GRAPHS: Experiment 5: Target and flanker ring always at fixation depth (Figure 6)   =
+##  GRAPHS: Experiment 5: Target and flanker ring always at fixation depth (Figure 7)   =
 ##=======================================================================================
-boxup("GRAPHS: Experiment 5: Target and flanker ring always at fixation depth (Figure 6)", bandChar = "=")
+boxup("GRAPHS: Experiment 5: Target and flanker ring always at fixation depth (Figure 7)", bandChar = "=")
 
 Exp5_data <-read.csv("Exp5_accumulatedPerErr.csv", header=T)
 Exp5_data <- AddExtraCols(Exp5_data)
@@ -202,10 +209,9 @@ Exp_5_boxplot
 boxup("GRAPHS: Save graphs as .svg files", bandChar = "-")
 # The graphs are then saved as a .svg file to enable formatting, labeling, and other 
 # edits required to prepare the figures for the paper.
-
-CombinedPlots <- grid.arrange(Exp_1_boxplot, Exp_2_boxplot, Exp_3_boxplot, Exp_4_boxplot, Exp_5_boxplot, ncol = 2)
+CombinedPlots <- plot_grid(Exp_1_boxplot, Exp_2_boxplot, Exp_3_boxplot, Exp_4_boxplot, Exp_5_boxplot, ncol = 2, rel_widths = c(5/8, 1))
 #Combined plots will be saved to your working directory 
-ggsave(file ="Smithers et al- figures 4-6 (PerErr).svg", device = 'svg', plot = CombinedPlots, width = 26, height = 22)
+ggsave(file ="Smithers et al- figures 5-7 (PerErr).svg", device = 'svg', plot = CombinedPlots, width = 26, height = 22)
 
 ############################################################################
 ############################################################################
@@ -424,14 +430,14 @@ anova(m2b, m1, test = "LRT") # Chisq=8.7476, Df=2, p = 0.0126 *
 #***************************************************************
 rm(list=ls(all=TRUE))
 
-####################################################################################
-####################################################################################
-###                                                                              ###
-###  PERCEPTUAL ERROR GRAPHS FOR THE SUPPLEMENTARY MATERIAL (FIGURES S5 AND S6)  ###
-###                                                                              ###
-####################################################################################
-####################################################################################
-banner("Perceptual Error Graphs for the Supplementary Material (Figures S5 and S6)", emph = TRUE)
+###################################################################################################################
+###################################################################################################################
+###                                                                                                             ###
+###  PERCEPTUAL ERROR GRAPHS FOR SUPPLEMENTARY (FIGURE 5-FIGURE SUPPLEMENT 1 AND FIGURE 6-FIGURE SUPPLEMENT 1)  ###
+###                                                                                                             ###
+###################################################################################################################
+###################################################################################################################
+banner("Perceptual Error Graphs for supplementary (Figure 5-figure supplement 1 and Figure 6-figure supplement 1)", emph = TRUE)
 #Perceptual error calculated using only trials in which the observer reported seeing the target inside the flanker ring
 
 # Colour blind friendly palette
@@ -469,13 +475,19 @@ AddExtraCols <- function(Inputdata){
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "far"] <- "4"
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "mid"] <- "1.26"
   Inputdata$Target_depth_in_m[Inputdata$Target_depth_in_m == "near"] <- "0.4"
+  # Make column for fixation depth in m
+  Inputdata["Fixation_depth_in_m"] <- Inputdata$Fixation_Screen
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "far"] <- "4"
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "mid"] <- "1.26"
+  Inputdata$Fixation_depth_in_m[Inputdata$Fixation_depth_in_m == "near"] <- "0.4"
   return(Inputdata)
 }
 
-##================================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure S5A).   =
-##================================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure S5A).", bandChar = "=")
+
+##===================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 5-figure supplement 1A)    =
+##===================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 1: Target and fixation at 1.26 m with flanker ring presented at each depth  (Figure 5-figure supplement 1A)", bandChar = "=")
 
 Exp1_data <-read.csv("Exp1_accumulatedPerErr_TargetInsideRing.csv", header=T) # Load data
 Exp1_data <- AddExtraCols(Exp1_data)
@@ -484,16 +496,17 @@ Exp1_data <- na.omit(Exp1_data)
 Exp_1_boxplot <- ggplot(Exp1_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Flanker_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Target_depth_in_m,ncol = 3) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 3) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,130), expand=c(0,0),  name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_1_boxplot 
 
-##=====================================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure S5B).   =
-##=====================================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure S5B).", bandChar = "=")
+
+##========================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 5-figure supplement 1B)    =
+##========================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 2: Target and fixation at 0.4 m or 4 m with flanker ring presented at each depth (Figure 5-figure supplement 1B)", bandChar = "=")
 
 Exp2_data <-read.csv("Exp2_accumulatedPerErr_TargetInsideRing.csv", header=T)
 Exp2_data <- AddExtraCols(Exp2_data)
@@ -502,17 +515,17 @@ Exp2_data <- na.omit(Exp2_data)
 Exp_2_boxplot <- ggplot(Exp2_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Flanker_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme  + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Target_depth_in_m,ncol = 2) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 2) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,130), expand=c(0,0), name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Flanker depth (m)")) +
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_2_boxplot
 
 
-##==============================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure S6A)   =
-##==============================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure S6A)", bandChar = "=")
+##=================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 6-figure supplement 1A)   =
+##=================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 3: Flanker ring and fixation at 1.26 m with target presented at each depth (Figure 6-figure supplement 1A)", bandChar = "=")
 
 Exp3_data <-read.csv("Exp3_accumulatedPerErr_TargetInsideRing.csv", header=T)
 Exp3_data <- AddExtraCols(Exp3_data)
@@ -521,16 +534,16 @@ Exp3_data <- na.omit(Exp3_data)
 Exp_3_boxplot <- ggplot(Exp3_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Target_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Flanker_depth_in_m,ncol = 2, scales = "free_x") + force_panelsizes(cols = c(1, 1/4)) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 2) + force_panelsizes(cols = c(1, 1/4)) +
   scale_y_continuous(breaks= seq(0,180,20), limits=c(0,150), expand=c(0,0),  name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Target depth (m)"))+
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
 Exp_3_boxplot
 
-##====================================================================================================================================
-##  SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure S6B)   =
-##====================================================================================================================================
-boxup("SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure S6B)", bandChar = "=")
+##=======================================================================================================================================================
+##  SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 6-figure supplement 1B)   =
+##=======================================================================================================================================================
+boxup("SUPPLEMENTARY GRAPHS: Experiment 4: Flanker ring and fixation at 0.4 m or 4 m with target presented at each depth (Figure 6-figure supplement 1B)", bandChar = "=")
 
 Exp4_data <-read.csv("Exp4_accumulatedPerErr_TargetInsideRing.csv", header=T)
 Exp4_data <- AddExtraCols(Exp4_data)
@@ -539,7 +552,7 @@ Exp4_data <- na.omit(Exp4_data)
 Exp_4_boxplot <- ggplot(Exp4_data, aes(x=factor(Target_Flanker_Spacing_in_deg), y= CircSD_deg, fill= Target_depth_in_m)) + 
   geom_boxplot(lwd=0.75, fatten =2, outlier.shape=NA) + xlab("Target-flanker spacing (deg)") + Graph.theme  + scale_fill_manual(values=cbPalette) +
   geom_point(position=position_jitterdodge(jitter.width = 0.15), shape = 21, size=2, alpha=0.6, colour = 'black') +
-  facet_wrap(~Flanker_depth_in_m,ncol = 3, scales = "free_x") + force_panelsizes(cols = c(1, 1, 1/3)) +
+  facet_wrap(~Fixation_depth_in_m,ncol = 3) + force_panelsizes(cols = c(1, 1, 1/3)) +
   scale_y_continuous(breaks= seq(0,180,20),limits=c(0,140), expand=c(0,0), name="Perceptual error (deg)") + 
   guides(fill=guide_legend(title="Target depth (m)"))+
   scale_x_discrete(labels=c("0.625" = "0.625", "1.25" = "1.25", "2.5" = "2.5", "5" = "5", "Inf" = "no flankers"))
@@ -551,10 +564,9 @@ Exp_4_boxplot
 boxup("SUPPLEMENTARY GRAPHS: Save graphs as .svg files", bandChar = "-")
 # The graphs are then saved as a .svg file to enable formatting, labeling, and other 
 # edits required to prepare the figures for the supplementary material.
-
-CombinedPlots <- grid.arrange(Exp_1_boxplot, Exp_2_boxplot, Exp_3_boxplot, Exp_4_boxplot, ncol = 2)
+CombinedPlots <- plot_grid(Exp_1_boxplot, Exp_2_boxplot, Exp_3_boxplot, Exp_4_boxplot, ncol = 2, rel_widths = c(5/8, 1))
 #Combined plots will be saved to your working directory 
-ggsave(file ="Smithers et al- supplementary figures S5-6 (PerErr-TargetInsideRingOnly).svg", device = 'svg', plot = CombinedPlots, width = 26, height = 17)
+ggsave(file ="Smithers et al- Figure 5 and 6-figure supplement 1 (PerErr-TargetInsideRingOnly).svg", device = 'svg', plot = CombinedPlots, width = 26, height = 17)
 
 
 ############################################################################################

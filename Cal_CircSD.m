@@ -1,11 +1,9 @@
 % This is a copy of the MATLAB script used to accumulate the raw data from each experiment 
-% and calculate the perceptual error as reported in Smithers et al.- "Large differences in
-% target-flanker depth increase crowding- evidence from a multi-depth plane display". 
-% This script accompanies the pre-print version of the paper and is currently being peer
-% reviewed. 
+% and calculate the perceptual error as reported in Smithers et al.- "Large differences in 
+% target-flanker depth can increase crowding- evidence from a multi-depth plane display".  
 
-% Script written by Dr Samuel P. Smithers, Northeastern University, 2022
-% Last edited November 2022
+% Script written by Dr Samuel P. Smithers, Northeastern University, 2022-2023
+% Last edited July 2023
 
 % Corresponding authors SPS (s.smithers@northeastern.edu) and PJB (p.bex@northeastern.edu)
 
@@ -14,8 +12,8 @@
 % It then calculates the circular standard deviation for each stimulus condition (based 
 % on 10 repeats (8 in Exp 4)) and saves this output as an accumulated results file. This 
 % script also has the option to do this using only the repeats in which the subject 
-% reported seeing the target inside the flanker ring (as reported in the paper discussion 
-% and supplementary materials).
+% reported seeing the target inside the flanker ring (as reported in the supplementary 
+% material).
 
 % This script uses the circular statistics toolbox:
 % https://www.mathworks.com/matlabcentral/fileexchange/10676-circular-statistics-toolbox-directional-statistics
@@ -31,26 +29,48 @@ IncludeTargetInsideRingOnly = "no";
 %% Choose which experiment to process by uncommenting the appropriate 'Savename' and 'DirectoryPath' below.
 % Exp 1
 SaveName = 'Exp1_accumulatedPerErr';
-DirectoryPath = 'PATH TO FOLDER CONTAINING "Exp 1 raw data"\'; % Folder must contain only the raw data from Experiment 1.
+DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 1 raw data"\'; % Folder must contain only the raw data from Experiment 1.
 
 % Exp 2
 % SaveName = 'Exp2_accumulatedPerErr';
-% DirectoryPath = 'PATH TO FOLDER CONTAINING "Exp 2 raw data"\'; % Folder must contain only the raw data from Experiment 2.
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 2 raw data"\'; % Folder must contain only the raw data from Experiment 2.
 
 % Exp 3
 % SaveName = 'Exp3_accumulatedPerErr';
-% DirectoryPath = 'PATH TO FOLDER CONTAINING "Exp 3 raw data"\'; % Folder must contain only the raw data from Experiment 3.
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 3 raw data"\'; % Folder must contain only the raw data from Experiment 3.
 
 % Exp 4
 % SaveName = 'Exp4_accumulatedPerErr';
-% DirectoryPath = 'PATH TO FOLDER CONTAINING "Exp 4 raw data"\'; % Folder must contain only the raw data from Experiment 4.
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 4 raw data"\'; % Folder must contain only the raw data from Experiment 4.
 
 % Exp 5
 % SaveName = 'Exp5_accumulatedPerErr';
-% DirectoryPath = 'PATH TO FOLDER CONTAINING "Exp 5 raw data"\'; % Folder must contain only the raw data from Experiment 5.
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 5 raw data"\'; % Folder must contain only the raw data from Experiment 5.
+
+% DATA FROM EXPERIENCED SUBJECTS
+% Exp 1
+% SaveName = 'Exp1_accumulatedPerErr_experiencedSubjects';
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 1 raw data (experienced subjects)"\'; % Folder must contain only the raw data from experienced subjects for Experiment 1.
+
+% Exp 2
+% SaveName = 'Exp2_accumulatedPerErr_experiencedSubjects';
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 2 raw data (experienced subjects)"\'; % Folder must contain only the raw data from experienced subjects for Experiment 2.
+
+% Exp 3
+% SaveName = 'Exp3_accumulatedPerErr_experiencedSubjects';
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 3 raw data (experienced subjects)"\'; % Folder must contain only the raw data from experienced subjects for Experiment 3.
+
+% Exp 4
+% SaveName = 'Exp4_accumulatedPerErr_experiencedSubjects';
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 4 raw data (experienced subjects)"\'; % Folder must contain only the raw data from experienced subjects for Experiment 4.
+
+% Exp 5
+% SaveName = 'Exp5_accumulatedPerErr_experiencedSubjects';
+% DirectoryPath = 'PATH WAY TO FOLDER CONTAINING "Exp 5 raw data (experienced subjects)"\'; % Folder must contain only the raw data from experienced subjects for Experiment 5.
+
 
 %% Calculate perceptual error (i.e. circular standard deviation) for each stimulus condition and accumulate results into a single file. 
-Files = dir(fullfile(DirectoryPath, '*_rawData.csv')); % Get list of all raw data files within the folder.
+Files = dir(fullfile(DirectoryPath, '*_rawData.csv')); %Get list of all raw data files within the folder.
 
 CollatedProcessedData = table();
 
@@ -142,9 +162,21 @@ for FileNo = 1:length(Files)
             [s, C_SD] = circ_std(subdata.ReportError_radians, [], [], []);
             ProcessedData.CircSD_deg(ii) = rad2deg(C_SD);
 
+            if contains(SaveName,"_experiencedSubjects")
+                % Calculate 95% bootstrapped confidence intervals for circular standard deviation
+                BootStrappedSDs=zeros(1,1000);
+                for bootNum = 1:1000 
+                    SampleData = randsample(subdata.ReportError_radians,length(subdata.ReportError_radians),'true');
+                    [s, C_SD] = circ_std(SampleData, [], [], []);
+                    BootStrappedSDs(bootNum) = rad2deg(C_SD);
+                end
+                ProcessedData.BootStrappedCI(ii) = 1.96*std(BootStrappedSDs);
+            end
+
         elseif DataCount <3
             ProcessedData.CircSD_deg(ii) = nan;
         end
+
     end
 
     % Collate all processed data.

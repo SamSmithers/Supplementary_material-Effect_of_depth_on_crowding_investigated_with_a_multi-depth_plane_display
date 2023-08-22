@@ -1,6 +1,6 @@
 # This is a copy of the R script used to generate figures for the the perceptual error data from the experienced 
-# subjects who did all five experiments. These figures form part of Smithers et al.- "Large differences in 
-# target-flanker depth can increase crowding- evidence from a multi-depth plane display". 
+# subjects who did all five experiments. These figures form part of Smithers et al. (2023)- "Large depth differences 
+# between target and flankers can increase crowding: Evidence from a multi-depth plane display", eLife.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2023
 # Last edited July 2023

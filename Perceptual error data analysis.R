@@ -1,7 +1,8 @@
 # This is a copy of the R script used to generate the figures for, and perform the statistical analysis on, 
-# the perceptual error data in Smithers et al.- "Large differences in target-flanker depth can increase crowding- 
-# evidence from a multi-depth plane display". For an explanation of the statistical analysis conducted, please refer 
-# to the statistical analysis section of the methods in the main manuscript.
+# the perceptual error data in Smithers et al. (2023)- "Large depth differences between target and flankers 
+# can increase crowding: Evidence from a multi-depth plane display", eLife. For an explanation of the 
+# statistical analysis conducted, please refer to the statistical analysis section of the methods in the 
+# main manuscript.
 
 # Script written by Dr Samuel P. Smithers, Northeastern University, 2022-2023
 # Last edited July 2023

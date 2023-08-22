@@ -1,6 +1,7 @@
 % This is a copy of the MATLAB script used to accumulate the raw data from each experiment 
-% and calculate the perceptual error as reported in Smithers et al.- "Large differences in 
-% target-flanker depth can increase crowding- evidence from a multi-depth plane display".  
+% and calculate the perceptual error as reported in Smithers et al. (2023)- "Large depth 
+% differences between target and flankers can increase crowding: Evidence from a multi-depth 
+% plane display", eLife. 
 
 % Script written by Dr Samuel P. Smithers, Northeastern University, 2022-2023
 % Last edited July 2023
